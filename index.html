@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ankun Tian — Southeast University</title>
+<meta name="description" content="Ankun Tian — M.Eng. candidate at Southeast University. Research on domain-specific architectures and FPGA-based acceleration for computational biology." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          paper:  '#EFEAE0',
+          ecru:   '#E5DFD3',
+          ink:    '#1C1A17',
+          muted:  '#6B655C',
+          accent: '#7A3024',
+          carbon: '#121010',
+        },
+        fontFamily: {
+          display: ['Fraunces', 'serif'],
+          serif:   ['"EB Garamond"', 'serif'],
+          mono:    ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  :root { color-scheme: light; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #EFEAE0;
+    color: #1C1A17;
+    font-family: 'EB Garamond', serif;
+    font-feature-settings: "liga", "kern", "onum";
+    -webkit-font-smoothing: antialiased;
+    font-size: 20px;
+    line-height: 1.7;
+  }
+
+  /* rice-paper grain */
+  .grain::before {
+    content: '';
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.05;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .hair { height: 1px; background: rgba(28,26,23,0.22); }
+
+  /* section eyebrow */
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #6B655C;
+  }
+
+  /* italic old-style figures */
+  .num {
+    font-family: 'Fraunces', serif;
+    font-variant-numeric: oldstyle-nums;
+    font-style: italic;
+    color: #7A3024;
+  }
+
+  /* photo frame — quiet */
+  .photo-frame {
+    position: relative;
+    overflow: hidden;
+    background: #121010;
+    transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .photo-frame img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 1.2s cubic-bezier(.2,.8,.2,1), filter .8s ease;
+    filter: saturate(0.75) contrast(1.03) brightness(0.92);
+  }
+  .photo-frame::after {
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(239,234,224,0.06),
+                inset 0 0 70px rgba(0,0,0,0.45);
+  }
+  .photo-frame:hover img {
+    transform: scale(1.035);
+    filter: saturate(1) contrast(1.06) brightness(1);
+  }
+  .photo-meta {
+    position: absolute;
+    left: 14px; right: 14px; bottom: 12px;
+    color: #EFEAE0;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .6s ease, transform .6s ease;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .photo-frame:hover .photo-meta { opacity: 1; transform: translateY(0); }
+
+  /* elegant link */
+  a.elegant { position: relative; }
+  a.elegant::after {
+    content: '';
+    position: absolute; left: 0; bottom: -2px;
+    width: 100%; height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+  a.elegant:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* tag chip */
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid rgba(28,26,23,0.3);
+    color: #1C1A17;
+    margin-right: 6px;
+  }
+  .tag.accent { border-color: #7A3024; color: #7A3024; }
+  .tag.filled { background: #7A3024; color: #EFEAE0; border-color: #7A3024; }
+
+  /* reveal on load */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { animation: riseIn .9s cubic-bezier(.2,.8,.2,1) both; }
+
+  ::selection { background: #7A3024; color: #EFEAE0; }
+
+  * { border-radius: 0 !important; }
+
+  /* news list — academic two-col */
+  .news-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 28px;
+    padding: 16px 0;
+    border-bottom: 1px dashed rgba(28,26,23,0.16);
+  }
+  .news-row:last-child { border-bottom: none; }
+  .news-row time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #6B655C;
+    padding-top: 4px;
+  }
+  .news-row .new {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    color: #7A3024;
+    border: 1px solid #7A3024;
+    padding: 1px 6px;
+    margin-right: 8px;
+    vertical-align: 2px;
+  }
+  @media (max-width: 720px) {
+    .news-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* dl rows */
+  .dl-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(28,26,23,0.16);
+  }
+  .dl-row:last-child { border-bottom: none; }
+  .dl-row dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #6B655C;
+    padding-top: 4px;
+  }
+  .dl-row dd { font-size: 18.5px; }
+  @media (max-width: 720px) {
+    .dl-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* publication entry */
+  .pub-entry {
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(28,26,23,0.14);
+  }
+  .pub-entry:last-child { border-bottom: none; }
+  .pub-authors .me {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #7A3024;
+    text-underline-offset: 3px;
+  }
+  .pub-venue {
+    font-style: italic;
+    color: rgba(28,26,23,0.78);
+  }
+  .pub-actions a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* avatar frame */
+  .avatar-frame {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: #E5DFD3;
+    box-shadow: 0 30px 50px -30px rgba(28,26,23,0.35);
+  }
+  .avatar-frame img {
+    width: 100%;
+    display: block;
+    filter: saturate(0.9) contrast(1.02);
+  }
+  .avatar-frame::after {
+    content: '';
+    position: absolute; inset: 0;
+    box-shadow: inset 0 0 0 1px rgba(28,26,23,0.08);
+    pointer-events: none;
+  }
+</style>
+</head>
+
+<body class="grain">
+
+<!-- ———————————————————————————————— NAV -->
+<header class="fixed top-0 inset-x-0 z-50" style="background: rgba(239,234,224,0.9); backdrop-filter: blur(6px);">
+  <div class="max-w-[1200px] mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
+    <a href="#intro" class="font-display text-[16px] tracking-[0.1em]">
+      Ankun&nbsp;Tian
+    </a>
+    <nav class="hidden md:flex gap-7 text-[12.5px] tracking-[0.2em] uppercase text-muted font-mono">
+      <a class="elegant" href="#intro">Intro</a>
+      <a class="elegant" href="#news">News</a>
+      <a class="elegant" href="#research">Research</a>
+      <a class="elegant" href="#publications">Publications</a>
+      <a class="elegant" href="#awards">Awards</a>
+      <a class="elegant" href="#photography">Photograph</a>
+      <a class="elegant" href="#life">Life</a>
+    </nav>
+    <a href="mailto:ankuntian@gmail.com" class="hidden sm:block font-mono text-[12px] tracking-[0.2em] uppercase text-muted elegant">
+      Contact
+    </a>
+  </div>
+  <div class="hair mx-6 md:mx-10"></div>
+</header>
+
+<!-- ———————————————————————————————— 01  INTRO -->
+<section id="intro" class="pt-36 md:pt-44 pb-24 px-6 md:px-10">
+  <div class="max-w-[1200px] mx-auto">
+
+    <div class="reveal eyebrow mb-8">— Personal Page / Updated April 2026</div>
+
+    <div class="grid grid-cols-12 gap-10 md:gap-14 items-start">
+
+      <!-- left: name + bio -->
+      <div class="col-span-12 md:col-span-8 reveal" style="animation-delay:.08s">
+        <h1 class="font-display font-light tracking-[-0.018em] leading-[1] text-[clamp(3rem,7.4vw,6.4rem)]">
+          Ankun Tian<span class="text-accent">.</span>
+        </h1>
+        <p class="font-display italic text-[clamp(1.3rem,2.2vw,1.8rem)] text-ink/75 mt-4 leading-[1.3]">
+          Hardware architect for computational biology.
+        </p>
+
+        <div class="mt-10 font-serif text-[20.5px] md:text-[21.5px] leading-[1.75] text-ink/88 space-y-5">
+          <p>
+            I am a first-year M.Eng. candidate at the
+            <em>School of Integrated Circuits, Southeast University</em>,
+            advised by <a href="#" class="elegant">Prof.&nbsp;Ming&nbsp;Ling</a>.
+            My research lies at the intersection of
+            <em>computer architecture</em> and
+            <em>computational biology</em>, with a focus on
+            domain-specific accelerators and multi-FPGA systems for
+            large-scale molecular docking and diffusion-based structural
+            biology workloads.
+          </p>
+          <p>
+            Broadly, I am interested in how the constraints of real silicon —
+            on-chip memory hierarchies, cross-board communication, numerical
+            precision — can be <em>co-designed</em> with scientific algorithms
+            rather than simply accommodating them. I build what I study: RTL
+            in SystemVerilog, CUDA kernels, and SystemC models, through to
+            ASIC frontend sign-off.
+          </p>
+          <p class="text-ink/70">
+            Outside the lab I play jazz piano, shoot RAW on small cameras,
+            and spend too many evenings listening to records through a
+            ladder-DAC chain.
+          </p>
+        </div>
+      </div>
+
+      <!-- right: avatar + card -->
+      <aside class="col-span-12 md:col-span-4 reveal" style="animation-delay:.2s">
+        <figure class="avatar-frame aspect-[4/5]">
+          <img src="Personal/ANKUN.jpg" alt="Portrait of Ankun Tian" />
+        </figure>
+        <figcaption class="mt-3 font-mono text-[11.5px] tracking-[0.2em] uppercase text-muted flex items-center justify-between">
+          <span>Ankun Tian</span>
+          <span>Nanjing · 2026</span>
+        </figcaption>
+
+        <div class="mt-8 border-l border-ink/25 pl-5">
+          <div class="eyebrow mb-3">At a Glance</div>
+          <dl class="text-[17.5px] leading-[1.75]">
+            <div class="py-1"><dt class="inline text-muted italic">Affiliation — </dt>
+              <dd class="inline">SEU, School of IC</dd></div>
+            <div class="py-1"><dt class="inline text-muted italic">Advisor — </dt>
+              <dd class="inline">Prof. Ming Ling</dd></div>
+            <div class="py-1"><dt class="inline text-muted italic">Program — </dt>
+              <dd class="inline">M.Eng., IC Engineering</dd></div>
+            <div class="py-1"><dt class="inline text-muted italic">Location — </dt>
+              <dd class="inline">Nanjing, China</dd></div>
+          </dl>
+
+          <div class="mt-5 eyebrow">Contact</div>
+          <ul class="mt-2 space-y-1 text-[17.5px]">
+            <li><a class="elegant" href="mailto:ankuntian@gmail.com">ankuntian@gmail.com</a></li>
+            <li><a class="elegant" href="mailto:ak.tian@seu.edu.cn">ak.tian@seu.edu.cn</a></li>
+            <li><a class="elegant" href="https://github.com/PureStudyer">github.com/PureStudyer</a></li>
+            <li><a class="elegant" href="#">Google Scholar</a> · <a class="elegant" href="#">CV (PDF)</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <div class="mt-16 hair"></div>
+
+    <!-- Research interests -->
+    <div class="mt-10 grid grid-cols-12 gap-6">
+      <div class="col-span-12 md:col-span-3 eyebrow pt-1">Research Interests</div>
+      <div class="col-span-12 md:col-span-9 font-serif text-[20px] leading-[1.8] text-ink/85">
+        Computer Architecture · Domain-Specific Architectures for Scientific
+        Computing · Hardware Acceleration for Computational Biology ·
+        FPGA-based Acceleration Systems · Multi-FPGA Systems ·
+        GPU Performance Engineering.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ———————————————————————————————— 02  NEWS -->
+<section id="news" class="py-24 md:py-28 px-6 md:px-10 border-t border-ink/15 bg-ecru/40">
+  <div class="max-w-[1100px] mx-auto">
+
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <div class="eyebrow mb-3"><span class="num mr-3">02.</span>News</div>
+        <h2 class="font-display font-light text-[clamp(2.4rem,5vw,4rem)] leading-[1.05] tracking-[-0.012em]">
+          Recent updates.
+        </h2>
+      </div>
+      <span class="hidden md:inline font-mono text-[12px] tracking-[0.22em] uppercase text-muted">
+        — Newest first
+      </span>
+    </div>
+
+    <div>
+      <div class="news-row">
+        <time datetime="2026-04">Apr · 2026</time>
+        <p class="font-serif text-[20px] leading-[1.7] text-ink/88">
+          <span class="new">New</span>
+          Launched this personal website — selected research, publications and a
+          quieter archive of photograph and listening notes.
+        </p>
+      </div>
+
+      <div class="news-row">
+        <time datetime="2026-03">Mar · 2026</time>
+        <p class="font-serif text-[20px] leading-[1.7] text-ink/88">
+          Paper &ldquo;<em>Breaking the BRAM Wall: Scalable Vina FPGA
+          Acceleration via Distributed Grid Storage and Cross-Board Long-Ring
+          Pipelines</em>&rdquo; <strong>accepted</strong> at
+          <em>DATE&nbsp;2026</em> (ACM/EDAC/IEEE Design, Automation &amp; Test
+          in Europe).
+        </p>
+      </div>
+
+      <div class="news-row">
+        <time datetime="2025-11">Nov · 2025</time>
+        <p class="font-serif text-[20px] leading-[1.7] text-ink/88">
+          Received <strong>First Prize</strong> at the National University FPGA
+          Innovation Design Competition, and a <strong>Gold Award</strong> at
+          the 2nd Global Digital-Intelligence Education Innovation Competition.
+        </p>
+      </div>
+
+      <div class="news-row">
+        <time datetime="2025-10">Oct · 2025</time>
+        <p class="font-serif text-[20px] leading-[1.7] text-ink/88">
+          Awarded the <em>Dioo Microelectronics Corporation Scholarship</em> —
+          a competitive corporate scholarship at the School of Integrated
+          Circuits, SEU.
+        </p>
+      </div>
+
+      <div class="news-row">
+        <time datetime="2025-09">Sep · 2025</time>
+        <p class="font-serif text-[20px] leading-[1.7] text-ink/88">
+          Started as <em>Teaching Assistant</em> for
+          <em>Electronic Circuits and Systems</em> at the School of
+          Integrated Circuits, Southeast University.
+        </p>
+      </div>
+
+      <div class="news-row">
+        <time datetime="2025-06">Jun · 2025</time>
+        <p class="font-serif text-[20px] leading-[1.7] text-ink/88">
+          Began a collaboration with
+          <em>Prof.&nbsp;Bruno&nbsp;da&nbsp;Silva</em> (Department of
+          Electronics and Informatics, Vrije Universiteit Brussel) on
+          GPU-side optimisation of the Uni-Dock2 docking engine.
+        </p>
+      </div>
+
+      <div class="news-row">
+        <time datetime="2024-09">Sep · 2024</time>
+        <p class="font-serif text-[20px] leading-[1.7] text-ink/88">
+          Joined the School of Integrated Circuits, Southeast University as an
+          M.Eng. candidate under Prof.&nbsp;Ming&nbsp;Ling, working on
+          multi-FPGA acceleration for molecular docking.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ———————————————————————————————— 03  RESEARCH -->
+<section id="research" class="py-24 md:py-28 px-6 md:px-10 border-t border-ink/15">
+  <div class="max-w-[1200px] mx-auto">
+
+    <div class="flex items-baseline justify-between mb-10">
+      <div>
+        <div class="eyebrow mb-3"><span class="num mr-3">03.</span>Research</div>
+        <h2 class="font-display font-light text-[clamp(2.4rem,5vw,4rem)] leading-[1.05] tracking-[-0.012em]">
+          Selected Projects.
+        </h2>
+      </div>
+    </div>
+
+    <p class="font-serif italic text-ink/70 text-[19px] leading-[1.8] max-w-[66ch] mb-16">
+      A chronological selection of research projects, covering
+      multi-FPGA acceleration, GPU kernel optimisation, and accelerator
+      architecture design for structural biology workloads.
+    </p>
+
+    <div>
+
+      <!-- Item 01 -->
+      <article class="py-12 border-t border-ink/25">
+        <div class="grid grid-cols-12 gap-6 md:gap-10">
+          <div class="col-span-12 md:col-span-3">
+            <div class="num text-3xl md:text-4xl">01.</div>
+            <div class="eyebrow mt-2">Sep 2024 — Present</div>
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              <span class="tag filled">Lead</span>
+              <span class="tag">Multi-FPGA</span>
+              <span class="tag">SystemVerilog</span>
+            </div>
+          </div>
+
+          <div class="col-span-12 md:col-span-9">
+            <h3 class="font-display text-[2rem] md:text-[2.4rem] font-normal leading-[1.12] tracking-[-0.008em]">
+              Scalable Multi-FPGA Acceleration System for AutoDock&nbsp;Vina
+            </h3>
+            <p class="font-serif italic text-muted mt-2 text-[17px]">
+              Advisor: Prof. Ming Ling · School of Integrated Circuits, Southeast University
+            </p>
+
+            <p class="font-serif text-[19.5px] leading-[1.8] text-ink/88 mt-6">
+              AutoDock Vina's energy grid is too large to fit on a single FPGA's
+              BRAM, creating a hard on-chip memory wall for docking accelerators.
+              This project introduces a <em>distributed grid-storage architecture</em>
+              that partitions the grid across boards, connected by a
+              cross-board <em>long-ring pipeline</em> running over high-speed
+              serial links.
+            </p>
+
+            <ul class="mt-5 space-y-2.5 font-serif text-[19px] leading-[1.75] text-ink/82 list-[square] pl-5 marker:text-accent">
+              <li>Designed the distributed storage scheme and ring-pipeline
+                  control logic in SystemVerilog, targeting a three-board
+                  Xilinx ZCU102 cluster.</li>
+              <li>Implemented the full RTL pipeline, cross-board flow control,
+                  and host-side orchestration; verified end-to-end on real hardware.</li>
+              <li>Achieved <strong>29.9×</strong> speedup over a
+                  high-performance CPU baseline and <strong>296.4×</strong>
+                  improvement in energy efficiency.</li>
+              <li>Work accepted as a conference paper at
+                  <em>DATE&nbsp;2026</em> (first author).</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Item 02 -->
+      <article class="py-12 border-t border-ink/15">
+        <div class="grid grid-cols-12 gap-6 md:gap-10">
+          <div class="col-span-12 md:col-span-3">
+            <div class="num text-3xl md:text-4xl">02.</div>
+            <div class="eyebrow mt-2">Jun — Nov 2025</div>
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              <span class="tag">CUDA</span>
+              <span class="tag">GPU</span>
+              <span class="tag accent">Collab · VUB</span>
+            </div>
+          </div>
+
+          <div class="col-span-12 md:col-span-9">
+            <h3 class="font-display text-[2rem] md:text-[2.4rem] font-normal leading-[1.12] tracking-[-0.008em]">
+              High-Performance Optimisation of Uni-Dock2 on GPU
+            </h3>
+            <p class="font-serif italic text-muted mt-2 text-[17px]">
+              Advisors: Prof. Ming Ling (SEU) · Prof. Bruno da Silva (VUB Brussels)
+            </p>
+
+            <p class="font-serif text-[19.5px] leading-[1.8] text-ink/88 mt-6">
+              A kernel-level performance study of Uni-Dock2, a large-scale
+              CUDA molecular-docking engine. I profiled the CUDA execution in
+              depth, restructured memory-access patterns and the parallel
+              execution scheme, and refined the conformational-search step
+              size to reduce unnecessary work during virtual screening.
+            </p>
+            <ul class="mt-5 space-y-2.5 font-serif text-[19px] leading-[1.75] text-ink/82 list-[square] pl-5 marker:text-accent">
+              <li>Identified key memory-bandwidth and occupancy bottlenecks via
+                  Nsight-Compute profiling on NVIDIA datacentre GPUs.</li>
+              <li>Restructured CUDA kernels for coalesced global-memory access
+                  and improved warp-level parallelism.</li>
+              <li>Tuned search-algorithm hyperparameters to cut compute without
+                  affecting docking quality.</li>
+              <li>Achieved an average <strong>1.91×</strong> end-to-end speedup
+                  on large-scale screening benchmarks.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Item 03 -->
+      <article class="py-12 border-t border-ink/15 border-b">
+        <div class="grid grid-cols-12 gap-6 md:gap-10">
+          <div class="col-span-12 md:col-span-3">
+            <div class="num text-3xl md:text-4xl">03.</div>
+            <div class="eyebrow mt-2">Sep 2023 — May 2024</div>
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              <span class="tag">SystemC</span>
+              <span class="tag">ASIC Arch.</span>
+              <span class="tag">Diffusion</span>
+            </div>
+          </div>
+
+          <div class="col-span-12 md:col-span-9">
+            <h3 class="font-display text-[2rem] md:text-[2.4rem] font-normal leading-[1.12] tracking-[-0.008em]">
+              Accelerator Architecture Design for DiffDock
+            </h3>
+            <p class="font-serif italic text-muted mt-2 text-[17px]">
+              Advisor: Prof. Ming Ling · School of Integrated Circuits, Southeast University
+            </p>
+            <p class="font-serif text-[19.5px] leading-[1.8] text-ink/88 mt-6">
+              A hardware accelerator architecture tailored for DiffDock, a
+              diffusion-model-based molecular docking framework. I identified
+              the computational hotspots of the diffusion pipeline and
+              designed the critical compute modules at the RTL level, with
+              SystemC models supporting fast architectural exploration.
+            </p>
+            <ul class="mt-5 space-y-2.5 font-serif text-[19px] leading-[1.75] text-ink/82 list-[square] pl-5 marker:text-accent">
+              <li>Profiled DiffDock to locate the dominant compute kernels
+                  under realistic input distributions.</li>
+              <li>Designed custom compute units and on-chip dataflow tailored
+                  to the graph / tensor workloads of diffusion-based docking.</li>
+              <li>Built SystemC behavioural models to evaluate design points
+                  before committing to RTL.</li>
+              <li>Achieved an average <strong>1.67×</strong> speedup over an
+                  NVIDIA V100 GPU baseline while operating at just 200&nbsp;MHz.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- earlier work -->
+    <div class="mt-14">
+      <div class="eyebrow mb-5">— Earlier Work</div>
+      <div class="grid grid-cols-12 gap-8">
+        <div class="col-span-12 md:col-span-6 font-serif text-[18.5px] leading-[1.8] text-ink/82">
+          <strong class="font-semibold">Verilog-A Modelling &amp; Digital Control for a MEMS Anemometer</strong>
+          <span class="text-muted italic"> — Oct 2022 – Oct 2023 · Advisor: Prof. Zaifa Zhou</span>.
+          Developed a high-precision Verilog-A behavioural model of a thermal
+          MEMS anemometer and designed its digital control logic in Verilog,
+          with full sensor-to-digital verification in Cadence Virtuoso.
+        </div>
+        <div class="col-span-12 md:col-span-6 font-serif text-[18.5px] leading-[1.8] text-ink/82">
+          <strong class="font-semibold">Hardware Intern — Bosch (China) Investment Ltd., Wuxi</strong>
+          <span class="text-muted italic"> — Sep 2023 – Feb 2024</span>.
+          Designed a custom PCB (schematic and layout) for Battery Management
+          System (BMS) testing in Altium Designer, and developed / debugged
+          embedded C firmware for board control and validation.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ———————————————————————————————— 04  PUBLICATIONS -->
+<section id="publications" class="py-24 md:py-28 px-6 md:px-10 border-t border-ink/15 bg-ecru/50">
+  <div class="max-w-[1100px] mx-auto">
+
+    <div class="mb-12">
+      <div class="eyebrow mb-3"><span class="num mr-3">04.</span>Publications</div>
+      <h2 class="font-display font-light text-[clamp(2.4rem,5vw,4rem)] leading-[1.05] tracking-[-0.012em]">
+        Peer-reviewed work.
+      </h2>
+      <p class="font-serif italic text-ink/65 text-[17px] leading-[1.7] mt-4 max-w-[68ch]">
+        Author names in <strong class="not-italic"><u>underline</u></strong> indicate
+        the author of this page. An asterisk (*) denotes the corresponding author.
+        A full list is maintained on my
+        <a href="#" class="elegant not-italic">Google Scholar</a> profile.
+      </p>
+    </div>
+
+    <!-- legend row -->
+    <div class="mb-8 flex flex-wrap items-center gap-6 font-mono text-[12px] tracking-[0.2em] uppercase text-muted">
+      <span>Total · 1 accepted</span>
+      <span class="text-ink/40">|</span>
+      <span>First-author · 1</span>
+      <span class="text-ink/40">|</span>
+      <span>In preparation · 2</span>
+    </div>
+
+    <!-- Conference papers -->
+    <div class="mb-14">
+      <div class="eyebrow mb-5">Conference Papers</div>
+
+      <article class="pub-entry">
+        <div class="grid grid-cols-12 gap-6">
+          <div class="col-span-12 md:col-span-1">
+            <div class="num text-[1.7rem]">[C1]</div>
+          </div>
+          <div class="col-span-12 md:col-span-11">
+            <h3 class="font-display text-[1.45rem] md:text-[1.7rem] font-normal leading-[1.28] tracking-[-0.005em]">
+              Breaking the BRAM Wall: Scalable Vina FPGA Acceleration via
+              Distributed Grid Storage and Cross-Board Long-Ring Pipelines
+            </h3>
+
+            <p class="pub-authors font-serif text-[18px] leading-[1.6] mt-3">
+              <span class="me">Ankun&nbsp;Tian</span>, Shuo&nbsp;Tang,
+              Rui&nbsp;Chen, and Ming&nbsp;Ling*.
+            </p>
+
+            <p class="pub-venue font-serif text-[18px] leading-[1.55] mt-1">
+              In <em>Proceedings of the 2026 ACM/EDAC/IEEE Design, Automation &amp;
+              Test in Europe Conference &amp; Exhibition</em>
+              (DATE&nbsp;'26), Verona, Italy, 2026. <span class="not-italic">To appear.</span>
+            </p>
+
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              <span class="tag filled">Accepted</span>
+              <span class="tag accent">DATE '26</span>
+              <span class="tag">CCF-B</span>
+              <span class="tag">First Author</span>
+              <span class="tag">Multi-FPGA</span>
+              <span class="tag">Computational Biology</span>
+            </div>
+
+            <details class="mt-5 group">
+              <summary class="cursor-pointer font-mono text-[12px] tracking-[0.22em] uppercase text-muted hover:text-accent select-none list-none">
+                <span class="group-open:hidden">▸ Abstract</span>
+                <span class="hidden group-open:inline">▾ Hide abstract</span>
+              </summary>
+              <p class="mt-3 font-serif italic text-ink/80 text-[18px] leading-[1.75] border-l-2 border-accent/60 pl-5">
+                AutoDock Vina is a widely-used molecular docking engine whose
+                energy-grid representation has long exceeded the BRAM capacity
+                of a single FPGA, bounding the scalability of hardware
+                accelerators. We present a distributed grid-storage
+                architecture that partitions the energy grid across multiple
+                FPGAs and connects them through a cross-board long-ring
+                pipeline. Evaluated on a three-board ZCU102 cluster, the
+                proposed system achieves 29.9× speedup over a high-performance
+                CPU baseline and 296.4× improvement in energy efficiency,
+                breaking the on-chip memory wall that has historically limited
+                FPGA-based docking.
+              </p>
+            </details>
+
+            <div class="pub-actions mt-5 flex flex-wrap gap-x-6 gap-y-2">
+              <a href="#" class="elegant text-accent">▸ Paper (PDF)</a>
+              <a href="#" class="elegant">▸ BibTeX</a>
+              <a href="#" class="elegant">▸ Slides</a>
+              <a href="#" class="elegant">▸ DOI</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- In preparation -->
+    <div>
+      <div class="eyebrow mb-5">Manuscripts in Preparation</div>
+      <div class="space-y-5 font-serif text-[18.5px] leading-[1.75] text-ink/80">
+        <p>
+          <span class="num mr-2">[P1]</span>
+          <em>GPU kernel restructuring for large-scale virtual-screening with
+          Uni-Dock2</em> &nbsp;— <span class="me font-semibold underline decoration-accent underline-offset-4">A. Tian</span>,
+          B. da&nbsp;Silva, M. Ling*.
+          <span class="text-muted italic">Target: SC / IPDPS, 2026.</span>
+        </p>
+        <p>
+          <span class="num mr-2">[P2]</span>
+          <em>Architecture exploration for diffusion-based docking
+          accelerators</em> &nbsp;— <span class="me font-semibold underline decoration-accent underline-offset-4">A. Tian</span>,
+          M. Ling*.
+          <span class="text-muted italic">Target: DAC / ICCAD, 2026.</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ———————————————————————————————— 05  AWARDS + SKILLS -->
+<section id="awards" class="py-24 md:py-28 px-6 md:px-10 border-t border-ink/15">
+  <div class="max-w-[1200px] mx-auto grid grid-cols-12 gap-12">
+
+    <!-- Awards column -->
+    <div class="col-span-12 md:col-span-7">
+      <div class="eyebrow mb-3"><span class="num mr-3">05.</span>Awards &amp; Honours</div>
+      <h2 class="font-display font-light text-[clamp(2rem,4.2vw,3rem)] leading-[1.1] tracking-[-0.01em] mb-10">
+        Selected recognition.
+      </h2>
+
+      <dl>
+        <div class="dl-row">
+          <dt>Nov 2025</dt>
+          <dd>
+            <strong class="font-semibold">First Prize</strong> —
+            National University FPGA Innovation Design Competition.
+          </dd>
+        </div>
+        <div class="dl-row">
+          <dt>Nov 2025</dt>
+          <dd>
+            <strong class="font-semibold">Gold Award</strong> —
+            The 2nd Global Digital-Intelligence Education Innovation Competition.
+          </dd>
+        </div>
+        <div class="dl-row">
+          <dt>Oct 2025</dt>
+          <dd>
+            <strong class="font-semibold">Dioo Microelectronics Scholarship</strong>
+            <span class="text-muted italic"> — competitive corporate scholarship</span>.
+          </dd>
+        </div>
+        <div class="dl-row">
+          <dt>Sep 2024 &amp; 2025</dt>
+          <dd>
+            <strong class="font-semibold">SEU Academic Scholarship</strong>
+            <span class="text-muted italic"> — School of Integrated Circuits</span>.
+          </dd>
+        </div>
+        <div class="dl-row">
+          <dt>Aug 2023</dt>
+          <dd>
+            <strong class="font-semibold">Third Prize</strong> —
+            National Embedded Chip &amp; System Design Competition (national-level).
+          </dd>
+        </div>
+      </dl>
+
+      <div class="mt-10">
+        <div class="eyebrow mb-3">Teaching &amp; Service</div>
+        <p class="font-serif text-[19px] leading-[1.8] text-ink/85">
+          Teaching Assistant, <em>Electronic Circuits and Systems</em>,
+          School of Integrated Circuits, SEU &nbsp;·&nbsp; Fall 2025.
+          Former Vice President, Computer Association, Southeast University
+          &nbsp;·&nbsp; 2022–2023.
+        </p>
+      </div>
+    </div>
+
+    <!-- Skills column -->
+    <aside class="col-span-12 md:col-span-5">
+      <div class="eyebrow mb-3">Skills</div>
+      <h3 class="font-display font-light text-[2rem] leading-[1.15] tracking-[-0.008em] mb-10">
+        Tools of the trade.
+      </h3>
+
+      <dl>
+        <div class="dl-row">
+          <dt>Hardware</dt>
+          <dd>Verilog · SystemVerilog · SystemC · FPGA Prototyping</dd>
+        </div>
+        <div class="dl-row">
+          <dt>Parallel</dt>
+          <dd>CUDA · GPU Kernel Profiling</dd>
+        </div>
+        <div class="dl-row">
+          <dt>Programming</dt>
+          <dd>Python · C / C++</dd>
+        </div>
+        <div class="dl-row">
+          <dt>EDA / Tools</dt>
+          <dd>Vivado · Vitis HLS · Design Compiler · VCS · Verdi</dd>
+        </div>
+        <div class="dl-row">
+          <dt>ML / Science</dt>
+          <dd>PyTorch · Molecular Docking Pipelines</dd>
+        </div>
+        <div class="dl-row">
+          <dt>Languages</dt>
+          <dd>Mandarin (native) · English (proficient)</dd>
+        </div>
+      </dl>
+
+      <div class="mt-10">
+        <div class="eyebrow mb-3">Education</div>
+        <div class="font-serif text-[19px] leading-[1.75] space-y-5">
+          <div>
+            <div class="italic text-muted text-[15.5px]">Sep 2024 — Present</div>
+            <strong class="font-semibold">M.Eng., Integrated Circuit Engineering</strong><br />
+            Southeast University.
+          </div>
+          <div>
+            <div class="italic text-muted text-[15.5px]">Sep 2020 — Jun 2024</div>
+            <strong class="font-semibold">B.Eng., Electronic Science &amp; Engineering</strong><br />
+            Southeast University.
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+<!-- ———————————————————————————————— 06  PHOTOGRAPHY -->
+<section id="photography" class="py-24 md:py-28 px-6 md:px-10 bg-carbon text-paper relative">
+  <div class="max-w-[1200px] mx-auto">
+
+    <div class="mb-10">
+      <div class="eyebrow mb-3" style="color:#9A9084;"><span class="num mr-3" style="color:#C2604F;">06.</span>Photograph</div>
+      <h2 class="font-display font-light text-[clamp(2.2rem,4.6vw,3.4rem)] leading-[1.05] tracking-[-0.012em]">
+        A quieter archive.
+      </h2>
+      <p class="font-serif italic text-paper/65 text-[18px] leading-[1.8] mt-3 max-w-[58ch]">
+        Occasional RAW stills — streets, rooms, people. Kept small, rarely posted.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-12 gap-3 md:gap-4">
+      <a class="photo-frame col-span-12 md:col-span-5 aspect-[4/5]">
+        <img loading="lazy" alt="" src="https://picsum.photos/seed/ankun-nj-01/900/1120" />
+        <div class="photo-meta"><span>No. 01 · Nanjing, Night</span><span>Fuji X-T</span></div>
+      </a>
+      <a class="photo-frame col-span-12 md:col-span-7 aspect-[16/10]">
+        <img loading="lazy" alt="" src="https://picsum.photos/seed/ankun-tokyo-02/1280/800" />
+        <div class="photo-meta"><span>No. 02 · Tokyo, After Rain</span><span>Contax T2 · Portra 400</span></div>
+      </a>
+      <a class="photo-frame col-span-6 md:col-span-3 aspect-[4/5]">
+        <img loading="lazy" alt="" src="https://picsum.photos/seed/ankun-still-03/800/1000" />
+        <div class="photo-meta"><span>No. 03 · Desk Still</span><span>Natural light</span></div>
+      </a>
+      <a class="photo-frame col-span-6 md:col-span-4 aspect-[4/5]">
+        <img loading="lazy" alt="" src="https://picsum.photos/seed/ankun-hanok-04/900/1120" />
+        <div class="photo-meta"><span>No. 04 · Suzhou Garden</span><span>Fuji X-T · 23 mm</span></div>
+      </a>
+      <a class="photo-frame col-span-12 md:col-span-5 aspect-[4/5]">
+        <img loading="lazy" alt="" src="https://picsum.photos/seed/ankun-port-05/1000/1250" />
+        <div class="photo-meta"><span>No. 05 · Portrait — K.</span><span>Leica M6 · HP5+</span></div>
+      </a>
+      <a class="photo-frame col-span-12 md:col-span-7 aspect-[16/9]">
+        <img loading="lazy" alt="" src="https://picsum.photos/seed/ankun-bxl-06/1400/800" />
+        <div class="photo-meta"><span>No. 06 · Brussels, VUB</span><span>Digital · RAW</span></div>
+      </a>
+      <a class="photo-frame col-span-12 md:col-span-5 aspect-[1/1]">
+        <img loading="lazy" alt="" src="https://picsum.photos/seed/ankun-cafe-07/1100/1100" />
+        <div class="photo-meta"><span>No. 07 · Back-street Café</span><span>Nanjing, winter</span></div>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ———————————————————————————————— 07  LIFE -->
+<section id="life" class="py-24 md:py-28 px-6 md:px-10">
+  <div class="max-w-[1000px] mx-auto">
+
+    <div class="mb-12">
+      <div class="eyebrow mb-3"><span class="num mr-3">07.</span>Hi-Fi &amp; Life</div>
+      <h2 class="font-display font-light text-[clamp(2.2rem,4.6vw,3.4rem)] leading-[1.05] tracking-[-0.012em]">
+        Off the clock.
+      </h2>
+      <p class="font-serif italic text-ink/65 text-[18px] leading-[1.8] mt-3 max-w-[60ch]">
+        Short notes on listening, practice, and gear — kept mostly as a
+        reminder to slow down.
+      </p>
+    </div>
+
+    <div class="space-y-14">
+
+      <article class="grid grid-cols-12 gap-6 md:gap-10">
+        <div class="col-span-12 md:col-span-4">
+          <div class="eyebrow mb-2">Note 01 · Mar 2026</div>
+          <h3 class="font-display text-[1.75rem] font-normal leading-[1.2]">
+            On the warmth of ladder networks.
+          </h3>
+        </div>
+        <div class="col-span-12 md:col-span-8 font-serif text-[19.5px] leading-[1.85] text-ink/85">
+          <p>
+            After a fortnight with a discrete R2R board in the main chain, the
+            soundstage <em>loosens</em> — cymbals lose their digital glass edge
+            and piano decays hang a little longer in the room. It isn't
+            <em>accurate</em> in the lab sense, but it has a temperature that
+            delta-sigma converters rarely find.
+          </p>
+          <p class="mt-4 text-ink/70">
+            Paired lately with Bill Evans, <em>Sunday at the Village Vanguard</em>
+            — an MFSL 45-rpm pressing, second side, around midnight with the
+            lamps low.
+          </p>
+        </div>
+      </article>
+
+      <div class="hair"></div>
+
+      <article class="grid grid-cols-12 gap-6 md:gap-10">
+        <div class="col-span-12 md:col-span-4">
+          <div class="eyebrow mb-2">Note 02 · Apr 2026</div>
+          <h3 class="font-display text-[1.75rem] font-normal leading-[1.2]">
+            An hour before the city wakes.
+          </h3>
+        </div>
+        <div class="col-span-12 md:col-span-8 font-serif text-[19.5px] leading-[1.85] text-ink/85">
+          <p>
+            Most Sundays the practice room is mine at seven. I work through the
+            same three pages of Debussy's <em>Arabesque No. 1</em>, then spend
+            the rest of the hour chasing a voicing out of
+            <em>Waltz for Debby</em> — never quite catching it, which is rather
+            the point.
+          </p>
+          <p class="mt-4 text-ink/70">
+            The upright isn't a concert instrument, but its felt has softened
+            the way old notebooks do.
+          </p>
+        </div>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ———————————————————————————————— FOOTER -->
+<footer class="px-6 md:px-10 pt-14 pb-10 border-t border-ink/15">
+  <div class="max-w-[1200px] mx-auto grid grid-cols-12 gap-8">
+
+    <div class="col-span-12 md:col-span-6">
+      <div class="font-display text-[1.8rem] md:text-[2.1rem] font-light italic leading-[1.1]">
+        Always open to collaboration<span class="not-italic text-accent">.</span>
+      </div>
+      <div class="mt-4 font-serif text-[18.5px] leading-[1.8]">
+        <a href="mailto:ankuntian@gmail.com" class="elegant">ankuntian@gmail.com</a> &nbsp;·&nbsp;
+        <a href="mailto:ak.tian@seu.edu.cn" class="elegant">ak.tian@seu.edu.cn</a>
+      </div>
+    </div>
+
+    <div class="col-span-6 md:col-span-3">
+      <div class="eyebrow mb-3">Index</div>
+      <ul class="space-y-1.5 font-serif text-[17px]">
+        <li><a class="elegant" href="#intro">Intro</a></li>
+        <li><a class="elegant" href="#news">News</a></li>
+        <li><a class="elegant" href="#research">Research</a></li>
+        <li><a class="elegant" href="#publications">Publications</a></li>
+        <li><a class="elegant" href="#awards">Awards &amp; Skills</a></li>
+        <li><a class="elegant" href="#photography">Photograph</a></li>
+        <li><a class="elegant" href="#life">Hi-Fi &amp; Life</a></li>
+      </ul>
+    </div>
+
+    <div class="col-span-6 md:col-span-3">
+      <div class="eyebrow mb-3">Elsewhere</div>
+      <ul class="space-y-1.5 font-serif text-[17px]">
+        <li><a class="elegant" href="https://github.com/PureStudyer">GitHub</a></li>
+        <li><a class="elegant" href="#">Google Scholar</a></li>
+        <li><a class="elegant" href="#">ORCID</a></li>
+        <li><a class="elegant" href="#">CV (PDF)</a></li>
+      </ul>
+    </div>
+
+    <div class="col-span-12 hair mt-10"></div>
+
+    <div class="col-span-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-2 font-mono text-[12px] tracking-[0.22em] uppercase text-muted">
+      <span>© 2026 Ankun Tian</span>
+      <span>Southeast University · School of Integrated Circuits</span>
+      <span>Set in Fraunces &amp; EB Garamond</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
